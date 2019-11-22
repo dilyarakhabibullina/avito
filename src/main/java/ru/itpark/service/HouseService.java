@@ -46,7 +46,6 @@ public class HouseService {
                 resultByPrice.add(requiredHouse);
 
             }
-            //  resultByPrice.sort((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
             resultByPrice.sort((o1, o2) -> -(o1.getPrice() - o2.getPrice()));
         }
         return resultByPrice;
@@ -73,7 +72,8 @@ public class HouseService {
     public List<House> getSortedByPriceAsc() {
         return getSortedBy((o1, o2) -> o1.getPrice() - (o2.getPrice()));
     }
-    public List<House> removeById (int id) {
+
+    public List<House> removeById(int id) {
         List<House> result = new LinkedList<>(houses);
         result.removeIf(o -> o.getId() == id);
         return result;
