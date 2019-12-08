@@ -23,10 +23,7 @@ public class HouseService {
             )
     );
 
-    public HouseService() throws SQLException {
-    }
-
-    public List<House> searchByName(String text) throws SQLException {
+    public List<House> getHouses () throws SQLException {
         List<House> houses = JdbcTemplateV3.<House>executeQuery(
                 "jdbc:sqlite:D:/domofond/src/main/resources\\db.sqlite",
                 "SELECT id, name, district, price, underground, rooms, square FROM houses",
@@ -39,6 +36,31 @@ public class HouseService {
                         resultSet.getInt("square")
                 )
         );
+        return houses;
+    }
+
+
+
+    public HouseService() throws SQLException {
+    }
+
+    public List<House> searchByName(String text) throws SQLException {
+//        List<House> houses = JdbcTemplateV3.<House>executeQuery(
+//////                "jdbc:sqlite:D:/domofond/src/main/resources\\db.sqlite",
+//////                "SELECT id, name, district, price, underground, rooms, square FROM houses",
+//////                resultSet -> new House(resultSet.getInt("id"),
+//////                        resultSet.getString("name"),
+//////                        resultSet.getString("district"),
+//////                        resultSet.getInt("price"),
+//////                        resultSet.getString("underground"),
+//////                        resultSet.getInt("rooms"),
+//////                        resultSet.getInt("square")
+//////                )
+//////        );
+
+
+        getHouses();
+
 
         List<House> houseList = new ArrayList<>();
         for (House requiredProduct : houses) {
@@ -52,18 +74,7 @@ public class HouseService {
 }
 
     public List<House> searchByPrice(int min, int max) throws SQLException {
-        List<House> houses = JdbcTemplateV3.<House>executeQuery(
-                "jdbc:sqlite:D:/domofond/src/main/resources\\db.sqlite",
-                "SELECT id, name, district, price, underground, rooms, square FROM houses",
-                resultSet -> new House(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("district"),
-                        resultSet.getInt("price"),
-                        resultSet.getString("underground"),
-                        resultSet.getInt("rooms"),
-                        resultSet.getInt("square")
-                )
-        );
+
         List<House> resultByPrice = new ArrayList<>();
         for (House requiredHouse : houses) {
             if (min < requiredHouse.getPrice() && max >= requiredHouse.getPrice()) {
@@ -76,18 +87,7 @@ public class HouseService {
     }
 
     public List<House> searchByDistrict(String text) throws SQLException {
-        List<House> houses = JdbcTemplateV3.<House>executeQuery(
-                "jdbc:sqlite:D:/domofond/src/main/resources\\db.sqlite",
-                "SELECT id, name, district, price, underground, rooms, square FROM houses",
-                resultSet -> new House(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("district"),
-                        resultSet.getInt("price"),
-                        resultSet.getString("underground"),
-                        resultSet.getInt("rooms"),
-                        resultSet.getInt("square")
-                )
-        );
+        getHouses();
         List<House> resultByDistrict = new ArrayList<>();
         for (House requiredHouse : houses) {
             if (requiredHouse.getDistrict().toLowerCase().contains(text.toLowerCase())) {
@@ -110,22 +110,9 @@ public class HouseService {
     }
 
     public List<House> removeById(int id) throws SQLException {
-        List<House> houses = JdbcTemplateV3.<House>executeQuery(
-                "jdbc:sqlite:D:/domofond/src/main/resources\\db.sqlite",
-                "SELECT id, name, district, price, underground, rooms, square FROM houses",
-                resultSet -> new House(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getString("district"),
-                        resultSet.getInt("price"),
-                        resultSet.getString("underground"),
-                        resultSet.getInt("rooms"),
-                        resultSet.getInt("square")
-                )
-        );
+        getHouses();
         List<House> result = new LinkedList<>(houses);
         result.removeIf(o -> o.getId() == id);
         return result;
     }
-
-
 }
